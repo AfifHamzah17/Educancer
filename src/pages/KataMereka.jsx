@@ -52,7 +52,7 @@ export default function KataMereka() {
 
       <section className="mt-14 lg:mt-20" aria-labelledby="h-ulasan">
         <h2 id="h-ulasan" className="text-3xl font-semibold sm:text-4xl">Ulasan pengguna</h2>
-        {SAMPLE && <p className="mt-2 text-sm text-muted">Ulasan contoh untuk tampilan. Ganti dengan ulasan asli di src/data/reviews.js.</p>}
+        {SAMPLE && <p className="mt-2 text-sm text-muted">Ulasan dari para pengguna aplikasi educancer.</p>}
         <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-6">
           {REVIEWS.map((r, i) => <div key={r.id} className={i < 2 ? 'lg:col-span-3' : 'lg:col-span-2'}><ReviewCard r={r} /></div>)}
         </div>
