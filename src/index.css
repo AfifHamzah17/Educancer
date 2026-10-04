@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+/* Tema gelap mengikuti atribut data-theme di <html> */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ------------------------------------------------------------------
+   Token warna. Semua turunan dari dua gambar referensi:
+   gradien langit #95CCDE ke kabut #D0E7E6, dan ilustrasi dokter
+   (#95CCDD topi, #DEF1F7 lingkaran, #F4C090 kulit, #E3F5EF kerah).
+   Satu aksen saja: biru laut #1F6F8B (kontras 5.7:1 di atas putih).
+------------------------------------------------------------------- */
+:root {
+  --bg: #E4F1F0;
+  --surface: #FFFFFF;
+  --surface-2: #F1F8F8;
+  --line: #C9DFE0;
+  --ink: #0F2E3B;
+  --muted: #4D6872;
+  --brand: #1F6F8B;
+  --brand-ink: #17617B;
+  --sky: #95CCDE;
+  --mist: #D0E7E6;
+  --pale: #DEF1F7;
+  --peach: #F4C090;
+  --grad-a: #95CCDE;
+  --grad-b: #D0E7E6;
+  --illus: #DEF1F7;
+  --shadow: 18 66 84;
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  --bg: #0A1E27;
+  --surface: #102C38;
+  --surface-2: #0D2530;
+  --line: #23495A;
+  --ink: #E4F2F5;
+  --muted: #9FBDC7;
+  --brand: #237996;
+  --brand-ink: #8ED0E6;
+  --grad-a: #0F3745;
+  --grad-b: #0A1E27;
+  --illus: #1A4455;
+  --shadow: 0 0 0;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --font-display: "Outfit Variable", "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --color-paper: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-sky: var(--sky);
+  --color-mist: var(--mist);
+  --color-pale: var(--pale);
+  --color-peach: var(--peach);
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background-color: var(--bg);
+  background-image: linear-gradient(180deg, var(--grad-a) 0, var(--grad-b) 760px, var(--bg) 1700px);
+  background-repeat: no-repeat;
+  -webkit-tap-highlight-color: transparent;
+  text-wrap: pretty;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; letter-spacing: -0.02em; }
+.lucide { stroke-width: 1.75; }
+.tnum { font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 65%, white); outline-offset: 2px; }
+
+/* Butiran halus, hanya di lapisan tetap agar tidak membebani scroll */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 70; pointer-events: none; opacity: .045; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+[data-theme="dark"] body::after { mix-blend-mode: screen; opacity: .03; }
+
+/* ---------- Permukaan ---------- */
+.shadow-soft { box-shadow: 0 22px 44px -22px rgb(var(--shadow) / .30), 0 2px 8px -2px rgb(var(--shadow) / .10); }
+.glass {
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  backdrop-filter: blur(16px) saturate(1.35);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  border: 1px solid color-mix(in srgb, #fff 60%, transparent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .55), 0 18px 40px -22px rgb(var(--shadow) / .35);
+}
+[data-theme="dark"] .glass { border-color: rgb(255 255 255 / .08); box-shadow: inset 0 1px 0 rgb(255 255 255 / .06), 0 18px 40px -22px rgb(0 0 0 / .6); }
+
+/* Kartu dengan tepi yang menyala mengikuti kursor */
+.spot { position: relative; isolation: isolate; }
+.spot::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), var(--brand), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity .3s;
+}
+.spot:hover::before { opacity: .85; }
+.spot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--sky) 38%, transparent), transparent 70%);
+  opacity: 0; transition: opacity .3s;
+}
+.spot:hover::after { opacity: 1; }
+
+/* ---------- Tombol ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 3rem; padding: 0 1.25rem; border-radius: 1rem; font-weight: 700; line-height: 1.1; cursor: pointer;
+  transition: transform .3s cubic-bezier(.16, 1, .3, 1), background-color .2s, box-shadow .2s, filter .2s;
+}
+.btn:active { transform: scale(.97) translateY(1px); }
+.btn:disabled { cursor: not-allowed; opacity: .55; }
+.btn-primary { background: var(--brand); color: #fff; box-shadow: 0 14px 26px -14px rgb(var(--shadow) / .7), inset 0 1px 0 rgb(255 255 255 / .2); }
+.btn-primary:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-soft { background: color-mix(in srgb, var(--surface) 78%, transparent); color: var(--ink); border: 1px solid var(--line); }
+.btn-soft:hover { background: var(--surface); }
+.btn-lg { min-height: 3.5rem; padding: 0 1.75rem; font-size: 1.05rem; border-radius: 1.15rem; }
+
+/* ---------- Skeleton ---------- */
+.skeleton {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--line) 55%, transparent) 25%, color-mix(in srgb, var(--surface) 70%, transparent) 50%, color-mix(in srgb, var(--line) 55%, transparent) 75%);
+  background-size: 200% 100%; animation: shimmer 1.4s linear infinite;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ---------- Gerak ---------- */
+@keyframes ring { from { stroke-dashoffset: 283; } to { stroke-dashoffset: 0; } }
+@keyframes float { 50% { transform: translate3d(0, -10px, 0); } }
+.float { animation: float 6s ease-in-out infinite; }
+@keyframes rise { from { opacity: 0; transform: translate3d(0, 18px, 0); } to { opacity: 1; transform: none; } }
+.rise { animation: rise .8s cubic-bezier(.16, 1, .3, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
+@keyframes pop { 0% { opacity: 0; transform: scale(.92) translate3d(0, 8px, 0); } 60% { transform: scale(1.02); } 100% { opacity: 1; transform: none; } }
+.pop { animation: pop .45s cubic-bezier(.34, 1.4, .64, 1) both; }
+@keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 0 rgb(31 111 139 / .45); } 50% { box-shadow: 0 0 0 7px rgb(31 111 139 / 0); } }
+.live-dot { animation: pulse-dot 2.4s ease-out infinite; }
+
+/* Marquee */
+@keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
+.marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee-track { display: flex; width: max-content; animation: marquee var(--dur, 42s) linear infinite; }
+.marquee-track.rev { animation-direction: reverse; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* Parallax lewat scroll timeline (browser tanpa dukungan tetap rapi, hanya diam) */
+@keyframes px-a { to { transform: translate3d(0, -64px, 0); } }
+@keyframes px-b { to { transform: translate3d(0, 34px, 0); } }
+@keyframes px-c { to { transform: translate3d(0, -120px, 0); } }
+@supports (animation-timeline: scroll()) {
+  .px-a, .px-b, .px-c { animation-timing-function: linear; animation-fill-mode: both; animation-timeline: scroll(root); animation-range: 0 820px; }
+  .px-a { animation-name: px-a; } .px-b { animation-name: px-b; } .px-c { animation-name: px-c; }
+}
+
+/* Drawer, scrim, FAB */
+.drawer { visibility: hidden; transform: translate3d(100%, 0, 0); transition: transform .5s cubic-bezier(.16, 1, .3, 1), visibility 0s .5s; }
+.drawer[data-open="true"] { visibility: visible; transform: none; transition: transform .5s cubic-bezier(.16, 1, .3, 1), visibility 0s; }
+.scrim { visibility: hidden; opacity: 0; transition: opacity .35s, visibility 0s .35s; }
+.scrim[data-open="true"] { visibility: visible; opacity: 1; transition: opacity .35s, visibility 0s; }
+.fab-item { opacity: 0; transform: translate3d(0, 14px, 0) scale(.9); pointer-events: none; transition: transform .45s cubic-bezier(.34, 1.4, .64, 1), opacity .25s; transition-delay: calc(var(--i, 0) * 45ms); }
+[data-open="true"] > .fab-item { opacity: 1; transform: none; pointer-events: auto; }
+
+/* Akordeon tanpa lompatan tinggi */
+.acc { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s cubic-bezier(.16, 1, .3, 1); }
+.acc[data-open="true"] { grid-template-rows: 1fr; }
+.acc > div { overflow: hidden; }
+
+/* Carousel */
+.snap-row { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.snap-row::-webkit-scrollbar { display: none; }
+.snap-row > * { scroll-snap-align: start; flex: none; }
+
+.skip-link { position: fixed; left: 1rem; top: -4rem; z-index: 80; padding: .75rem 1rem; border-radius: .75rem; background: var(--ink); color: var(--bg); font-weight: 700; transition: top .2s; }
+.skip-link:focus { top: 1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .marquee { overflow-x: auto; mask-image: none; -webkit-mask-image: none; }
+}
