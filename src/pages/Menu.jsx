@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, ArrowRight, Smartphone, WifiOff, HeartHandshake, BookOpen, PlayCircle, ListChecks, MessageCircle, Star } from 'lucide-react'
+import { ArrowUpRight, ArrowRight, Smartphone, WifiOff, HeartHandshake, BookOpen, PlayCircle, ListChecks, MessageCircle, Star, Hospital, Stethoscope, BookOpenCheck, HandCoins, LayoutGrid } from 'lucide-react'
 import Scramble from '../components/Scramble.jsx'
 import Spot from '../components/Spot.jsx'
 import Carousel from '../components/Carousel.jsx'
@@ -24,6 +24,15 @@ const LANGKAH = [
   ['Kerjakan kuis', 'Lima soal untuk tiap jenis kanker.', '/quiz'],
   ['Tanya tim', 'Konsultasi lewat WhatsApp pada jam layanan.', '/konsultasi'],
   ['Beri ulasan', 'Ceritakan pengalaman Anda memakai Educancer.', '/kata-mereka'],
+]
+const KEUNGGULAN = [
+  [HandCoins, 'Akses gratis untuk semua'],
+  [Hospital, 'Dikembangkan oleh RSUD Provinsi NTB'],
+  [Stethoscope, 'Materi disusun tenaga kesehatan lintas profesi'],
+  [BookOpenCheck, 'Informasi berbasis sumber ilmiah'],
+  [Smartphone, 'Mudah diakses melalui smartphone'],
+  [WifiOff, 'Tersedia fitur akses offline (melalui aplikasi)'],
+  [LayoutGrid, 'Membahas kanker dari berbagai aspek'],
 ]
 const NAMA_TOPIK = TOPICS.map((t) => t.nama.replace(/^Kanker /, ''))
 
@@ -99,7 +108,32 @@ export default function Menu() {
         <TextBand items={NAMA_TOPIK} />
         <ChipBand items={TOPICS} reverse />
       </section>
-
+      {/* Apa itu Educancer */}
+      <section className="mt-20 lg:mt-28" aria-labelledby="h-tentang">
+        <div className="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:gap-16">
+          <div>
+            <H2 id="h-tentang">Apa itu EDUCANCER?</H2>
+            <p className="mt-4 max-w-[52ch] text-lg leading-relaxed text-ink/75">
+              EDUCANCER adalah platform edukasi kanker terintegrasi dari RSUD Provinsi NTB
+              yang membantu Anda memahami kanker, mengenali tanda dan risikonya, serta
+              menemukan informasi yang tepat untuk langkah selanjutnya.
+            </p>
+          </div>
+          <div className="glass rounded-[2rem] p-6 sm:p-8">
+            <h3 className="text-xl font-semibold">Mengapa Memilih Educancer?</h3>
+            <ul className="mt-5 space-y-3.5">
+              {KEUNGGULAN.map(([Icon, teks]) => (
+                <li key={teks} className="flex items-center gap-3">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-pale text-brand-ink">
+                    <Icon size={18} aria-hidden />
+                  </span>
+                  <span className="text-sm font-medium sm:text-base">{teks}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
       {/* Carousel materi */}
       <section className="mt-20 lg:mt-28" aria-labelledby="h-topik">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
