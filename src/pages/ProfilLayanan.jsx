@@ -38,7 +38,7 @@ export default function ProfilLayanan() {
                   <h2 className="text-3xl font-semibold sm:text-4xl">{s.judul}</h2>
                   <p className="mt-2 max-w-[56ch] text-lg leading-relaxed text-muted">{s.ket}</p>
                 </div>
-                <span className="btn btn-primary btn-lg w-full lg:w-auto">Lihat profil lengkap<ArrowUpRight size={20} aria-hidden /></span>
+                <span className="btn btn-primary btn-lg w-full lg:w-auto">Lihat profil lengkap</span>
               </Spot>
             </li>
           )

@@ -25,6 +25,11 @@ export const VIDEOS = [
 
   V('yt', 'wJl3Bux1384', 'REHAT : "Kemoterapi Bikin Botak ?"', 'Dukungan & Perawatan'),
   V('yt', 'NO9HTkoHI1E', 'REHAT : "Radioterapi Bikin Gosong"', 'Dukungan & Perawatan'),
+
+  V('yt', 'Ou52YY-szcU', 'Deteksi Dini Kanker Payudara dengan SADARI – SADANIS: ', 'Dukungan & Perawatan'),
+  V('yt', 'G7KtlIl4HVA', 'Deteksi Dini Kanker Leher Rahim', 'Dukungan & Perawatan'),
+  V('yt', 'VKcbDH96lS0', 'Cegah Kanker Serviks Sejak Dini dengan Imunisasi HPV', 'Dukungan & Perawatan'),
+  V('yt', 'HmdM7JSvENc', 'Ayo Cegah Penyakit Kanker', 'Dukungan & Perawatan'),
 ]
 
 // Urutan grup = urutan kemunculan pertama di VIDEOS

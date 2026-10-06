@@ -46,14 +46,14 @@ export default function Menu() {
       {/* Hero: teks kiri, komposisi berlapis kanan */}
       <section className="grid items-center gap-10 py-8 lg:min-h-[78dvh] lg:grid-cols-[1.05fr_.95fr] lg:gap-16 lg:py-12" aria-labelledby="judul-hero">
         <div>
-          <h1 id="judul-hero" className="text-5xl font-semibold leading-[1.02] sm:text-6xl xl:text-7xl">
-            <Scramble text="Jelajahi informasi kanker yang lengkap dan terpercaya." duration={1100} />
+          <h1 id="judul-hero" className="text-4xl font-semibold leading-[1.02] sm:text-5xl xl:text-6xl">
+            <Scramble text="Kenali Kanker Sejak Dini, Dapatkan Penanganan yang Tepat" duration={1100} />
           </h1>
           <p className="rise mt-6 max-w-[52ch] text-lg leading-relaxed text-ink/80" style={{ '--i': 5 }}>
-            Disusun secara kolaboratif oleh tenaga kesehatan lintas profesi di RSUD Provinsi NTB. Dokter, perawat, ahli gizi, apoteker, dan fisioterapis.
+            Jelajahi informasi kanker yang lengkap dan terpercaya, disusun secara kolaboratif oleh tenaga kesehatan lintas profesi di RSUD Provinsi NTB. Dokter, perawat, ahli gizi, apoteker, dan fisioterapis.
           </p>
           <div className="rise mt-8 flex flex-wrap gap-3" style={{ '--i': 7 }}>
-            <Link to="/materi" className="btn btn-primary btn-lg"><BookOpen size={20} aria-hidden />Tentang Educancer</Link>
+            <a href="#h-tentang" className="btn btn-primary btn-lg"> <BookOpen size={20} aria-hidden /> Tentang Educancer</a>
             <a href="#h-langkah" className="btn btn-soft btn-lg">Mulai Dari Sini</a>
           </div>
           <div className="rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" style={{ '--i': 9 }}>
@@ -140,7 +140,7 @@ export default function Menu() {
           <div><H2 id="h-topik">Materi per jenis kanker</H2><p className="mt-3 max-w-[56ch] text-lg text-ink/75">Setiap modul bisa dibaca ulang tanpa internet setelah dibuka satu kali.</p></div>
           <Link to="/materi" className="btn btn-soft">Lihat semua materi<ArrowRight size={18} aria-hidden /></Link>
         </div>
-        <Carousel label="Materi per jenis kanker" itemClass="w-[68%] sm:w-[38%] lg:w-[23.5%]">
+        <Carousel label="Materi per jenis kanker" itemClass="w-[68%] sm:w-[38%] lg:w-[23.5%] shrink-0 snap-start">
           {TOPICS.map((t) => <TopicCard key={t.slug} t={t} to={`/materi/${t.slug}`} />)}
         </Carousel>
       </section>
@@ -200,7 +200,7 @@ export default function Menu() {
           <H2 id="h-kata">Kata mereka</H2>
           <Link to="/kata-mereka" className="btn btn-soft"><Star size={18} aria-hidden />Semua ulasan</Link>
         </div>
-        <Carousel label="Ulasan pengguna" itemClass="w-[88%] sm:w-[48%] lg:w-[32%]">
+        <Carousel label="Ulasan pengguna" itemClass="w-[88%] sm:w-[48%] lg:w-[32%] shrink-0 snap-start">
           {REVIEWS.map((r) => <ReviewCard key={r.id} r={r} />)}
         </Carousel>
         {/* {SAMPLE && <p className="mt-2 text-sm text-muted">Ulasan contoh untuk tampilan. Ganti dengan ulasan asli di src/data/reviews.js.</p>} */}

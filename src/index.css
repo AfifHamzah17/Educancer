@@ -113,6 +113,7 @@ body::after {
 .spot:hover::after { opacity: 1; }
 
 /* ---------- Tombol ---------- */
+@layer components {
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   min-height: 3rem; padding: 0 1.25rem; border-radius: 1rem; font-weight: 700; line-height: 1.1; cursor: pointer;
@@ -125,7 +126,7 @@ body::after {
 .btn-soft { background: color-mix(in srgb, var(--surface) 78%, transparent); color: var(--ink); border: 1px solid var(--line); }
 .btn-soft:hover { background: var(--surface); }
 .btn-lg { min-height: 3.5rem; padding: 0 1.75rem; font-size: 1.05rem; border-radius: 1.15rem; }
-
+}
 /* ---------- Skeleton ---------- */
 .skeleton {
   background: linear-gradient(90deg, color-mix(in srgb, var(--line) 55%, transparent) 25%, color-mix(in srgb, var(--surface) 70%, transparent) 50%, color-mix(in srgb, var(--line) 55%, transparent) 75%);
