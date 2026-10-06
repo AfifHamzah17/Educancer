@@ -17,7 +17,7 @@ import { REVIEWS, SAMPLE } from '../data/reviews.js'
 import { useShell } from '../lib/shell.js'
 
 const SOAL = Object.values(QUIZ).reduce((a, q) => a + q.length, 0)
-const STATS = [[TOPICS.length, 'jenis kanker'], [VIDEOS.length, 'video edukasi'], [SOAL, 'soal kuis'], [FAQ.length, 'tanya jawab']]
+const STATS = [[TOPICS.length, 'jenis kanker tertinggi di NTB'], ["600+", 'pengguna aplikasi/website'], ["200+", 'konsultasi online'], ["93,2%", 'tingkat kepuasan pengguna']]
 const LANGKAH = [
   ['Buka materi', 'Pilih jenis kanker, baca modulnya.', '/materi'],
   ['Tonton video', 'Penjelasan ringkas dari tenaga kesehatan.', '/video'],
@@ -38,14 +38,14 @@ export default function Menu() {
       <section className="grid items-center gap-10 py-8 lg:min-h-[78dvh] lg:grid-cols-[1.05fr_.95fr] lg:gap-16 lg:py-12" aria-labelledby="judul-hero">
         <div>
           <h1 id="judul-hero" className="text-5xl font-semibold leading-[1.02] sm:text-6xl xl:text-7xl">
-            <Scramble text="Kenali kanker lebih awal, rawat lebih tepat." duration={1100} />
+            <Scramble text="Jelajahi informasi kanker yang lengkap dan terpercaya." duration={1100} />
           </h1>
           <p className="rise mt-6 max-w-[52ch] text-lg leading-relaxed text-ink/80" style={{ '--i': 5 }}>
-            Materi, video, dan kuis dari dokter, perawat, apoteker, nutrisionis, dan fisioterapis RSUD Provinsi NTB.
+            Disusun secara kolaboratif oleh tenaga kesehatan lintas profesi di RSUD Provinsi NTB. Dokter, perawat, ahli gizi, apoteker, dan fisioterapis.
           </p>
           <div className="rise mt-8 flex flex-wrap gap-3" style={{ '--i': 7 }}>
-            <Link to="/materi" className="btn btn-primary btn-lg"><BookOpen size={20} aria-hidden />Mulai membaca materi</Link>
-            <Link to="/quiz" className="btn btn-soft btn-lg">Kerjakan kuis</Link>
+            <Link to="/materi" className="btn btn-primary btn-lg"><BookOpen size={20} aria-hidden />Tentang Educancer</Link>
+            <a href="#h-langkah" className="btn btn-soft btn-lg">Mulai Dari Sini</a>
           </div>
           <div className="rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" style={{ '--i': 9 }}>
             <div className="flex items-center gap-2">
@@ -68,16 +68,16 @@ export default function Menu() {
           </div>
           <div className="px-a absolute -bottom-2 -left-3 w-32 sm:w-44 lg:-left-10 lg:w-52"><Staff role="dokter" label="Ilustrasi dokter RSUD Provinsi NTB" className="float drop-shadow-[0_18px_22px_rgba(18,66,84,.25)]" /></div>
           <div className="px-c absolute right-2 top-10 sm:-right-4 lg:-right-6">
-            <div className="float glass flex items-center gap-3 rounded-2xl py-2.5 pl-2.5 pr-4" style={{ animationDelay: '-2s' }}>
+            {/* <div className="float glass flex items-center gap-3 rounded-2xl py-2.5 pl-2.5 pr-4" style={{ animationDelay: '-2s' }}>
               <span className="grid size-10 place-items-center rounded-xl bg-pale text-brand-ink"><HeartHandshake size={20} aria-hidden /></span>
               <span className="text-sm font-semibold leading-tight">Gratis untuk<br />semua warga</span>
-            </div>
+            </div> */}
           </div>
           <div className="px-a absolute bottom-16 right-2 sm:-right-4 lg:-right-8">
-            <div className="float glass flex items-center gap-3 rounded-2xl py-2.5 pl-2.5 pr-4" style={{ animationDelay: '-4s' }}>
+            {/* <div className="float glass flex items-center gap-3 rounded-2xl py-2.5 pl-2.5 pr-4" style={{ animationDelay: '-4s' }}>
               <span className="grid size-10 place-items-center rounded-xl bg-pale text-brand-ink"><WifiOff size={20} aria-hidden /></span>
               <span className="text-sm font-semibold leading-tight">Materi terbaca<br />tanpa internet</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -169,7 +169,7 @@ export default function Menu() {
         <Carousel label="Ulasan pengguna" itemClass="w-[88%] sm:w-[48%] lg:w-[32%]">
           {REVIEWS.map((r) => <ReviewCard key={r.id} r={r} />)}
         </Carousel>
-        {SAMPLE && <p className="mt-2 text-sm text-muted">Ulasan contoh untuk tampilan. Ganti dengan ulasan asli di src/data/reviews.js.</p>}
+        {/* {SAMPLE && <p className="mt-2 text-sm text-muted">Ulasan contoh untuk tampilan. Ganti dengan ulasan asli di src/data/reviews.js.</p>} */}
       </section>
 
       <section className="mt-20 lg:mt-28" aria-label="Unduh aplikasi"><ApkCard /></section>
