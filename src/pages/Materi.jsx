@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader.jsx'
 import TopicCard from '../components/TopicCard.jsx'
 import Field from '../components/Field.jsx'
 import { TOPICS } from '../data/topics.js'
+import MateriLainnyaCard from '../components/MateriLainnyaCard.jsx'
 
 export default function Materi() {
   const [q, setQ] = useState('')
@@ -27,8 +28,9 @@ export default function Materi() {
           <button onClick={() => setQ('')} className="btn btn-soft mt-5">Tampilkan semua materi</button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
+        <div className="flex flex-wrap justify-center gap-4 lg:gap-5 [&>*]:w-[calc((100%-1rem)/2)] sm:[&>*]:w-[calc((100%-2rem)/3)] lg:[&>*]:w-[calc((100%-5rem)/5)]">
           {list.map((t) => <TopicCard key={t.slug} t={t} to={`/materi/${t.slug}`} />)}
+          <MateriLainnyaCard />
         </div>
       )}
     </main>

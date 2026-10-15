@@ -9,13 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/outfit": "^5.1.0",
     "@fontsource-variable/plus-jakarta-sans": "^5.1.0",
+    "@vercel/analytics": "^2.0.1",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-pdf": "^9.1.1",
-    "react-router-dom": "^6.28.0",
-    "@fontsource-variable/outfit": "^5.1.0"
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
