@@ -1,8 +1,8 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { Analytics } from '@vercel/analytics/react'
-import RouteTracker from './components/RouteTracker.jsx'   // tanpa kurung kurawal
+import { Analytics } from "@vercel/analytics/react"
+import RouteTracker from './components/RouteTracker.jsx'
 import '@fontsource-variable/plus-jakarta-sans'
 import '@fontsource-variable/outfit'
 import './index.css'
