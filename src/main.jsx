@@ -2,6 +2,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
+import RouteTracker from './components/RouteTracker.jsx'   // tanpa kurung kurawal
 import '@fontsource-variable/plus-jakarta-sans'
 import '@fontsource-variable/outfit'
 import './index.css'
@@ -11,6 +12,7 @@ createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <App />
     <Analytics />
+    <RouteTracker />
   </BrowserRouter>
 )
 
