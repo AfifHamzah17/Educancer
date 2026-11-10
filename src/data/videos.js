@@ -1,5 +1,6 @@
-const V = (type, id, judul, grup) => ({
+const V = (type, id, judul, grup, ratio) => ({
   type, id, judul, grup,
+  ratio: ratio ?? (type === 'gd' ? 9 / 16 : undefined),
   url: type === 'ig'
     ? `https://www.instagram.com/reel/${id}/`
     : type === 'gd'
@@ -8,6 +9,17 @@ const V = (type, id, judul, grup) => ({
 })
 
 export const VIDEOS = [
+  // Video Google Drive
+  // Kalau sudah dipindah ke YouTube (unlisted), ganti 'gd' → 'yt', isi ID YouTube, dan tambahkan 9 / 16 di akhir.
+  V('yt', 'kymFA_CStmU', 'Batuk Tak Kunjung Sembuh, Apakah Bisa Kanker Paru?', 'Deteksi Dini & Gejala', 9 / 16),
+  V('yt', '0DET301borc', 'Sering Mimisan, Kapan Harus Curiga Kanker Nasofaring?', 'Deteksi Dini & Gejala', 9 / 16),
+  V('yt', 'hBezux6Qlvc', '5 Gejala Hamil Anggur yang Perlu Diwaspadai', 'Deteksi Dini & Gejala', 9 / 16),
+  V('yt', 't1uGLqDggVE', 'Ada Benjolan di Payudara, Apakah Pasti Kanker?', 'Deteksi Dini & Gejala', 9 / 16),
+  V('yt', 'UADWOFHpQ4k', 'BAB Berdarah, Apakah Pasti Wasir?', 'Deteksi Dini & Gejala', 9 / 16),
+  V('yt', 't-jN4r_6Rew', '5 Gejala Kanker Ovarium yang Perlu Diwaspadai', 'Deteksi Dini & Gejala', 9 / 16),
+  V('yt', 'JYQj99-Zyeo', 'Mitos atau Fakta Seputar Kanker Serviks', 'Deteksi Dini & Gejala', 9 / 16),
+  V('yt', 'FcocRfvWi4k', 'Kanker Testis: Kanker yang Bisa Menyerang Laki-Laki Usia Muda', 'Deteksi Dini & Gejala', 9 / 16),
+  
   V('yt', 'yJrJpTBPM4w', 'Nutrisi Untuk Pasien Kanker dengan Kemoterapi', 'Serba-serbi Kanker'),
   V('yt', 'pomiFEjKinc', 'Apa Itu Kanker Kolorektal dan Apa Saja Gejalanya ?', 'Serba-serbi Kanker'),
   V('yt', 'CplbhsdY7P0', 'Kenali Gejala Awal "KANKER PARU"', 'Serba-serbi Kanker'),
@@ -27,16 +39,6 @@ export const VIDEOS = [
   V('yt', 'G7KtlIl4HVA', 'Deteksi Dini Kanker Leher Rahim', 'Dukungan & Perawatan'),
   V('yt', 'VKcbDH96lS0', 'Cegah Kanker Serviks Sejak Dini dengan Imunisasi HPV', 'Dukungan & Perawatan'),
   V('yt', 'HmdM7JSvENc', 'Ayo Cegah Penyakit Kanker', 'Dukungan & Perawatan'),
-
-  // Tambahan: video dari Google Drive (grup baru otomatis muncul di urutan terakhir)
-  V('gd', '18eF9L0yioKu50wTCkpYbcvb3G5cLGQwK', 'Batuk Tak Kunjung Sembuh, Apakah Bisa Kanker Paru?', 'Deteksi Dini & Gejala'),
-  V('gd', '1Wmh53AY1cKxi7FFv8EU7tPBVujfHyv5w', 'Sering Mimisan, Kapan Harus Curiga Kanker Nasofaring?', 'Deteksi Dini & Gejala'),
-  V('gd', '1yPjLuyI5DeRhXkZo0GOBmk8fftylVmcw', '5 Gejala Hamil Anggur yang Perlu Diwaspadai', 'Deteksi Dini & Gejala'),
-  V('gd', '1EVVw0xzlG4IVpcFh0V12nAAh08TL9eB6', 'Ada Benjolan di Payudara, Apakah Pasti Kanker?', 'Deteksi Dini & Gejala'),
-  V('gd', '1keHf0OBzDLkZI_n0kKpe6Wzy_54kWDhC', 'BAB Berdarah, Apakah Pasti Wasir?', 'Deteksi Dini & Gejala'),
-  V('gd', '19d36GiUl7VyVN_2F_ZNdLBs2Vfzuag8i', '5 Gejala Kanker Ovarium yang Perlu Diwaspadai', 'Deteksi Dini & Gejala'),
-  V('gd', '1n_0TQGVnCc6bXU9dFbBENeyxVvpj9nCk', 'Mitos atau Fakta Seputar Kanker Serviks', 'Deteksi Dini & Gejala'),
-  V('gd', '1is_wpjupCqcm3CGcc3QGBgjGbBmNCQ05', 'Kanker Testis: Kanker yang Bisa Menyerang Laki-Laki Usia Muda', 'Deteksi Dini & Gejala'),
 ]
 
 // Urutan grup = urutan kemunculan pertama di VIDEOS

@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useRef, useCallback } from 'react'
 import { Play, ExternalLink, WifiOff, Instagram, Film } from 'lucide-react'
 import PageHeader from '../components/PageHeader.jsx'
 import { VIDEOS } from '../data/videos.js'
@@ -6,7 +6,7 @@ import { useOnline } from '../lib/hooks.js'
 
 // ---------- Sumber thumbnail ----------
 // yt : i.ytimg.com
-// gd : drive.google.com/thumbnail → fallback lh3.googleusercontent.com (wajib file di-share "Anyone with the link")
+// gd : drive.google.com/thumbnail → fallback lh3.googleusercontent.com (file wajib di-share "Anyone with the link")
 // ig : tidak ada thumbnail publik → placeholder
 const sources = (v) =>
   v.type === 'yt'
@@ -43,26 +43,75 @@ function Thumb({ v, imgClass = '' }) {
   )
 }
 
-// Facade: iframe baru dimuat setelah pengguna menekan play.
-function Player({ v }) {
-  const [playing, setPlaying] = useState(false)
+// ---------- Ukur lebar elemen (untuk menskala iframe Drive di layar sempit) ----------
+function useWidth(ref, dep) {
+  const [w, setW] = useState(0)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const ro = new ResizeObserver(([e]) => setW(e.contentRect.width))
+    ro.observe(el)
+    setW(el.getBoundingClientRect().width)
+    return () => ro.disconnect()
+  }, [ref, dep])
+  return w
+}
+
+const GD_MIN_W = 420 // lebar minimum agar kontrol pemutar Drive muat
+
+// Facade: iframe baru dimuat setelah pengguna menekan play (atau memilih video dari daftar).
+// Player di-remount lewat `key`, jadi semua state ter-reset per video.
+function Player({ v, autoStart }) {
+  const [playing, setPlaying] = useState(autoStart)
+  const [showCtl, setShowCtl] = useState(false) // false = kontrol Drive ditutup lapisan transparan
   const online = useOnline()
-  useEffect(() => setPlaying(false), [v])
+  const boxRef = useRef(null)
+  const boxW = useWidth(boxRef, online)
   const ig = v.type === 'ig'
   const gd = v.type === 'gd'
+  const ratio = v.ratio // undefined = 16:9 biasa
+  const sized = !ig && !!ratio
+
   if (!online) return (
     <div className="grid aspect-video place-items-center rounded-[2rem] bg-surface p-6 text-center shadow-soft">
       <div><WifiOff className="mx-auto mb-3 text-brand-ink" size={32} aria-hidden /><p className="text-lg font-semibold">Video membutuhkan koneksi internet.</p><p className="text-muted">Materi PDF tetap bisa dibaca tanpa internet.</p></div>
     </div>
   )
+
+  // Video dengan rasio khusus (vertikal): kotak mengikuti rasio, tinggi maksimal 70% layar
+  const frameStyle = sized
+    ? { width: `min(100%, calc(70dvh * ${ratio}))`, aspectRatio: String(ratio) }
+    : undefined
+  const frameClass = ig ? 'h-[34rem]' : sized ? '' : 'aspect-video'
+
+  // Drive: iframe dirender selebar GD_MIN_W lalu diperkecil agar kontrolnya tidak terpotong
+  const scale = gd && boxW ? Math.min(1, boxW / GD_MIN_W) : 1
+  const gdW = boxW ? boxW / scale : GD_MIN_W
+  const gdStyle = gd
+    ? { position: 'absolute', top: 0, left: 0, width: gdW, height: gdW / ratio,
+        transform: `scale(${scale})`, transformOrigin: '0 0' }
+    : undefined
+
+  const src = ig
+    ? `https://www.instagram.com/reel/${v.id}/embed/`
+    : gd
+      ? `${v.url}${v.url.includes('?') ? '&' : '?'}autoplay=1` // Drive tidak menjamin autoplay
+      : `${v.url}?autoplay=1&rel=0&playsinline=1`
+
   return (
     <div>
-      <div className={`relative overflow-hidden rounded-[2rem] bg-ink shadow-soft ${ig ? 'h-[34rem]' : 'aspect-video'}`}>
+      <div ref={boxRef} style={frameStyle} className={`relative isolate mx-auto overflow-hidden rounded-3xl bg-ink shadow-soft ${frameClass}`}>
         {playing ? (
-          <iframe title={v.judul} className="size-full" allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen
-            src={ig ? `https://www.instagram.com/reel/${v.id}/embed/`
-                 : gd ? v.url // Drive: pakai URL /preview apa adanya, tanpa param
-                 : `${v.url}?autoplay=1&rel=0`} />
+          <>
+            <iframe title={v.judul} style={gdStyle}
+              className={gd ? 'border-0' : 'absolute inset-0 size-full border-0'}
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen src={src} />
+            {/* Lapisan transparan: menahan sentuhan agar kontrol Drive tidak muncul.
+                Kalau autoplay gagal, ketuk video sekali untuk membuka kontrol. */}
+            {gd && !showCtl && (
+              <div className="absolute inset-0 z-10" onClick={() => setShowCtl(true)} aria-hidden />
+            )}
+          </>
         ) : (
           <button onClick={() => setPlaying(true)} aria-label={`Putar ${v.judul}`} className="group relative size-full">
             <Thumb v={v} imgClass="transition-transform duration-500 group-hover:scale-[1.03]" />
@@ -71,7 +120,16 @@ function Player({ v }) {
         )}
       </div>
       {ig && <a href={v.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-2 font-bold text-brand-ink">Buka di Instagram <ExternalLink size={16} aria-hidden /></a>}
-      {gd && <a href={v.url.replace('/preview', '/view')} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-2 font-bold text-brand-ink">Buka di Google Drive <ExternalLink size={16} aria-hidden /></a>}
+      {gd && (
+        <div className="flex flex-wrap items-center gap-x-5">
+          <a href={v.url.replace('/preview', '/view')} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-2 font-bold text-brand-ink">Buka di Google Drive <ExternalLink size={16} aria-hidden /></a>
+          {playing && (
+            <button onClick={() => setShowCtl((s) => !s)} className="mt-3 inline-flex min-h-11 items-center font-bold text-brand-ink underline-offset-4 hover:underline">
+              {showCtl ? 'Sembunyikan kontrol' : 'Tampilkan kontrol'}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -89,17 +147,29 @@ const Row = memo(function Row({ v, active, onPick }) {
 
 export default function Video() {
   const [cur, setCur] = useState(VIDEOS[0])
+  const [auto, setAuto] = useState(false) // video pertama tidak autoplay, hanya yang dipilih dari daftar
+  const playerRef = useRef(null)
+
+  const pick = useCallback((v) => {
+    setCur(v)
+    setAuto(true)
+    // Di mobile daftar ada di bawah player → gulir ke player
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      playerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [])
+
   return (
     <main>
       <PageHeader title="Video edukasi" crumbs={[{ to: '/menu', label: 'Beranda' }, { label: 'Video' }]} art="video"
         lead={`${VIDEOS.length} video singkat dari tim RSUD Provinsi NTB. Pilih satu dari daftar, lalu tekan putar.`} />
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start xl:grid-cols-[minmax(0,1fr)_26rem]">
-        <div className="space-y-4 lg:sticky lg:top-28">
-          <Player v={cur} />
+        <div ref={playerRef} className="scroll-mt-24 space-y-4 lg:sticky lg:top-28">
+          <Player key={cur.id} v={cur} autoStart={auto} />
           <h2 className="text-2xl font-semibold">{cur.judul}</h2>
         </div>
-        <div className="space-y-3 lg:max-h-[calc(100dvh-9rem)] lg:overflow-y-auto lg:p-1" aria-label="Daftar video">
-          {VIDEOS.map((v) => <Row key={v.id} v={v} active={v === cur} onPick={setCur} />)}
+        <div className="space-y-3 pb-28 lg:max-h-[calc(100dvh-9rem)] lg:overflow-y-auto lg:p-1 lg:pb-1" aria-label="Daftar video">
+          {VIDEOS.map((v) => <Row key={v.id} v={v} active={v === cur} onPick={pick} />)}
         </div>
       </div>
     </main>
