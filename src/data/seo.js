@@ -1,9 +1,9 @@
-// Registry SEO per route. PENTING: samakan key dengan path di App.jsx.
+// Registry SEO per route. Key harus sama dengan path di App.jsx.
 // canonical dipakai kalau URL route beda dengan URL final (mis. '/menu' → '/')
 
 export const SEO = {
   '/menu': {
-    title: '', // kosong = pakai default situs
+    title: '', // kosong = pakai judul default situs
     canonical: '/',
     description:
       'Platform edukasi kanker gratis dari RSUD Provinsi NTB: modul 10 jenis kanker, video edukasi, kuis, tanya jawab, dan konsultasi WhatsApp oleh tenaga kesehatan lintas profesi.',
@@ -62,7 +62,7 @@ export const faqJsonLd = (items) => ({
   })),
 })
 
-// JSON-LD MedicalWebPage untuk halaman detail materi (opsional tapi disarankan)
+// JSON-LD MedicalWebPage untuk halaman detail materi
 export const materiJsonLd = (t) => ({
   '@context': 'https://schema.org',
   '@type': 'MedicalWebPage',

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { SEO } from '../data/seo.js'
 
 export const SITE = 'https://educancer.my.id'
 
@@ -48,4 +49,16 @@ export function useSEO({ title, description, path = '/', jsonLd } = {}) {
     }
     return () => script?.remove()
   }, [title, description, path, ld])
+}
+
+// Cari meta per route dari registry, lalu panggil useSEO.
+// Pemakaian: usePageSEO('/materi') atau usePageSEO('/faq', { jsonLd: ... })
+export function usePageSEO(route, extra = {}) {
+  const meta = SEO[route] ?? {}
+  useSEO({
+    title: meta.title || undefined,
+    description: meta.description,
+    path: meta.canonical ?? route,
+    ...extra,
+  })
 }
