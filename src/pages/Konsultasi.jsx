@@ -6,10 +6,12 @@ import Field from '../components/Field.jsx'
 import { Staff } from '../components/Illustrations.jsx'
 import { KONSULTASI, waLink } from '../data/links.js'
 import { RS } from '../data/contact.js'
+import { usePageSEO } from '../lib/seo.js'
 
 const ICON = { umum: MessageCircle, khusus: Users }
 
 export default function Konsultasi() {
+  usePageSEO('/konsultasi')
   const [f, setF] = useState({ nama: '', status: 'umum', pesan: '' })
   const [err, setErr] = useState({})
   const set = (k) => (e) => { setF({ ...f, [k]: e.target.value }); if (err[k]) setErr({ ...err, [k]: undefined }) }

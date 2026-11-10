@@ -5,8 +5,10 @@ import TopicCard from '../components/TopicCard.jsx'
 import Field from '../components/Field.jsx'
 import { TOPICS } from '../data/topics.js'
 import MateriLainnyaCard from '../components/MateriLainnyaCard.jsx'
+import { usePageSEO } from '../lib/seo.js'
 
 export default function Materi() {
+  usePageSEO('/materi')
   const [q, setQ] = useState('')
   const list = useMemo(() => {
     const s = q.trim().toLowerCase()

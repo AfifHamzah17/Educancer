@@ -16,6 +16,7 @@ import { QUIZ } from '../data/quiz.js'
 import { FAQ } from '../data/faq.js'
 import { REVIEWS, SAMPLE } from '../data/reviews.js'
 import { useShell } from '../lib/shell.js'
+import { useSEO } from '../lib/seo.js'
 
 const SOAL = Object.values(QUIZ).reduce((a, q) => a + q.length, 0)
 const STATS = [[TOPICS.length, 'jenis kanker tertinggi di NTB'], ["600+", 'pengguna aplikasi/website'], ["200+", 'konsultasi online'], ["93,2%", 'tingkat kepuasan pengguna']]
@@ -41,6 +42,10 @@ const H2 = ({ children, id }) => <h2 id={id} className="font-display text-3xl fo
 
 export default function Menu() {
   const { install } = useShell()
+  useSEO({
+    path: '/',
+    description: 'Platform edukasi kanker gratis dari RSUD Provinsi NTB: modul 10 jenis kanker, video edukasi, kuis, tanya jawab, dan konsultasi WhatsApp oleh tenaga kesehatan lintas profesi.',
+  })
   const card = 'relative flex flex-col overflow-hidden rounded-[2.5rem] bg-surface p-6 shadow-soft transition-transform duration-300 [transition-timing-function:cubic-bezier(.16,1,.3,1)] hover:-translate-y-1 active:scale-[.98] sm:p-8'
   return (
     <main>

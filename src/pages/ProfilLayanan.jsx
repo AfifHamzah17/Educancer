@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Stethoscope, Syringe, Radiation, ArrowUpRight, Star, MapPin } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Stethoscope, Syringe, Radiation, ArrowUpRight, Star, MapPin, X } from 'lucide-react'
 import PageHeader from '../components/PageHeader.jsx'
 import Spot from '../components/Spot.jsx'
 import { PROFIL_LAYANAN } from '../data/links.js'
@@ -7,7 +8,32 @@ import { RS } from '../data/contact.js'
 
 const ICON = { poli: Stethoscope, kemo: Syringe, radio: Radiation }
 
+// Lightbox sederhana: overlay + gambar diperbesar, tutup via klik luar / ✕ / Esc
+function Lightbox({ src, alt, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden' // kunci scroll halaman belakang
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+  return (
+    <div role="dialog" aria-modal="true" aria-label={alt} onClick={onClose}
+      className="fixed inset-0 z-50 grid cursor-zoom-out place-items-center bg-ink/90 p-4 sm:p-8">
+      <img src={src} alt={alt} onClick={(e) => e.stopPropagation()}
+        className="max-h-[92dvh] max-w-full cursor-zoom-in rounded-[1.5rem] object-contain shadow-soft" />
+      <button onClick={onClose} aria-label="Tutup gambar jadwal"
+        className="absolute right-4 top-4 grid size-11 place-items-center rounded-full bg-white/95 text-brand shadow-soft transition-transform duration-200 hover:scale-105 active:scale-95">
+        <X size={22} aria-hidden />
+      </button>
+    </div>
+  )
+}
+
 export default function ProfilLayanan() {
+  const [zoom, setZoom] = useState(false)
   return (
     <main>
       <PageHeader title="Profil layanan onkologi" crumbs={[{ to: '/menu', label: 'Beranda' }, { label: 'Layanan onkologi' }]}
@@ -44,6 +70,20 @@ export default function ProfilLayanan() {
           )
         })}
       </ul>
+
+      {/* Jadwal layanan — ketuk gambar untuk memperbesar */}
+      <section className="mt-10 rounded-[2.5rem] bg-surface p-6 shadow-soft sm:p-10" aria-label="Jadwal layanan onkologi">
+        <h2 className="text-2xl font-semibold sm:text-3xl">Jadwal layanan onkologi</h2>
+        <p className="mt-2 text-lg text-muted">Jadwal praktik dokter dan layanan kanker. Ketuk gambar untuk memperbesar.</p>
+        <button type="button" onClick={() => setZoom(true)} aria-label="Perbesar gambar jadwal layanan"
+          className="mt-6 block w-full cursor-zoom-in">
+          <img src="/images/Jadwal.png" alt="Tabel jadwal praktik dokter layanan onkologi RSUD Provinsi NTB"
+            width="1200" height="1500" loading="lazy" decoding="async"
+            className="mx-auto w-full max-w-3xl rounded-[1.5rem] object-contain" />
+        </button>
+      </section>
+
+      {zoom && <Lightbox src="/images/Jadwal.png" alt="Jadwal praktik dokter layanan onkologi RSUD Provinsi NTB" onClose={() => setZoom(false)} />}
 
       <section className="mt-10 flex flex-wrap items-center justify-between gap-5 rounded-[2.5rem] bg-pale/80 p-6 sm:p-10" aria-label="Beri ulasan">
         <div className="max-w-xl"><h2 className="text-2xl font-semibold sm:text-3xl">Beri ulasan untuk layanan kami</h2><p className="mt-2 text-lg text-ink/75">Pengalaman Anda membantu kami memperbaiki layanan dan materi Educancer.</p></div>
